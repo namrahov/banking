@@ -21,6 +21,8 @@ func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
 		return nil, err
 	}
 
+	defer rows.Close()
+
 	customers := make([]Customer, 0)
 	for rows.Next() {
 		var c Customer
@@ -41,8 +43,6 @@ func NewCustomerRepositoryDb() CustomerRepositoryDb {
 	if err != nil {
 		log.Fatal(fmt.Sprintf("Unable to connect:%v\n", err))
 	}
-
-	defer conn.Close()
 
 	log.Println("Connected to database!")
 
