@@ -12,6 +12,8 @@ type CustomerHandlers struct {
 
 func (ch *CustomerHandlers) GetAllCustomers(w http.ResponseWriter, r *http.Request) {
 
+	customers, _ := ch.service.GetAllCustomer()
+
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(customers)
 }

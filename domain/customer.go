@@ -3,7 +3,7 @@ package domain
 type Customer struct {
 	Id          string
 	Name        string
-	DateofBirth string
+	DateOfBirth string
 	Status      string
 }
 
