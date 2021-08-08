@@ -32,3 +32,7 @@ func GetCustomerById(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(vars["customer_id"])
 	fmt.Fprintf(w, vars["customer_id"])
 }
+
+func CreateCustomer(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Customer is created")
+}
