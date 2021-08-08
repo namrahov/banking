@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gorilla/mux"
 	"github.com/namrahov/banking/app"
 	"log"
 	"net/http"
@@ -8,10 +9,11 @@ import (
 
 func main() {
 
-	//mux := NewHandlerMux()
+	mux := mux.NewRouter()
 
-	http.HandleFunc("/greet", app.Greet)
-	http.HandleFunc("/customers", app.GetAllCustomers)
+	mux.HandleFunc("/greet", app.Greet)
+	mux.HandleFunc("/customers", app.GetAllCustomers)
+	mux.HandleFunc("/customer/{customer_id}", app.GetCustomerById)
 
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+	log.Fatal(http.ListenAndServe("localhost:8000", mux))
 }
