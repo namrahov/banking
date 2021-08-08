@@ -3,18 +3,20 @@ package main
 import (
 	"github.com/gorilla/mux"
 	"github.com/namrahov/banking/app"
+	"github.com/namrahov/banking/domain"
+	"github.com/namrahov/banking/service"
 	"log"
 	"net/http"
 )
 
 func main() {
 
-	mux := mux.NewRouter()
+	router := mux.NewRouter()
 
-	mux.HandleFunc("/greet", app.Greet).Methods(http.MethodGet)
-	mux.HandleFunc("/customers", app.GetAllCustomers).Methods(http.MethodGet)
-	mux.HandleFunc("/customer/{customer_id}", app.GetCustomerById).Methods(http.MethodGet)
-	mux.HandleFunc("/customer", app.CreateCustomer).Methods(http.MethodPost)
+	ch := app.CustomerHandlers{
+		service.NewCustomerService(domain.NewCustomerRepositoryStub()),
+	}
+	router.HandleFunc("/customers", ch.GetAllCustomers).Methods(http.MethodGet)
 
-	log.Fatal(http.ListenAndServe("localhost:8000", mux))
+	log.Fatal(http.ListenAndServe("localhost:8000", router))
 }
