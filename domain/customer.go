@@ -5,7 +5,7 @@ type Customer struct {
 	Name        string `json:"full_name"`
 	City        string `json:"city"`
 	Zipcode     string `json:"zipcode"`
-	DateofBirth string `json:"date_of_birth"`
+	DateOfBirth string `json:"date_of_birth"`
 	Status      string `json:"status"`
 }
 
