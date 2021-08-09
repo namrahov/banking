@@ -2,6 +2,7 @@ package domain
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"log"
@@ -43,8 +44,12 @@ func (d CustomerRepositoryDb) FindById(id string) (*Customer, error) {
 	var c Customer
 	err := row.Scan(&c.City, &c.Id, &c.DateOfBirth, &c.Name, &c.Zipcode, &c.Status)
 	if err != nil {
-		log.Println("Error while scanning customers " + err.Error())
-		return nil, err
+		if err == sql.ErrNoRows {
+			return nil, errors.New("Customer not found")
+		} else {
+			log.Println("Error while scanning customers " + err.Error())
+			return nil, errors.New("Unexpected database error")
+		}
 	}
 
 	return &c, nil
