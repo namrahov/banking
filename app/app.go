@@ -10,10 +10,11 @@ import (
 
 func Start() {
 	router := mux.NewRouter()
-	//ch := CustomerHandlers{service.NewCustomerService(domain.NewCustomerRepositoryStub())}
+
 	ch := CustomerHandlers{service.NewCustomerService(domain.NewCustomerRepositoryDb())}
 
 	router.HandleFunc("/customers", ch.GetAllCustomers).Methods(http.MethodGet)
+	router.HandleFunc("/customer/{customer_id}", ch.FindById).Methods(http.MethodGet)
 
 	log.Fatal(http.ListenAndServe("localhost:8000", router))
 }
