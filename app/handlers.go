@@ -2,7 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/namrahov/banking/service"
 	"net/http"
@@ -28,10 +27,12 @@ func (ch *CustomerHandlers) FindById(w http.ResponseWriter, r *http.Request) {
 	customer, err := ch.service.FindById(idString)
 
 	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, err.Error())
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(err.Code)
+		json.NewEncoder(w).Encode(err.AsMessage())
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(customer)
 }
