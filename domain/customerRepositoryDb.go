@@ -12,13 +12,13 @@ type CustomerRepositoryDb struct {
 	conn *sql.DB
 }
 
-func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
+func (d CustomerRepositoryDb) FindAll() ([]Customer, *errs.AppError) {
 
 	rows, err := d.conn.Query("select city, customer_id, date_of_birth, name, zipcode, status from customers")
 
 	if err != nil {
 		log.Println("Error while querying customer table " + err.Error())
-		return nil, err
+		return nil, errs.NewNotFoundError("Customers not found")
 	}
 
 	defer rows.Close()
@@ -27,10 +27,16 @@ func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
 	for rows.Next() {
 		var c Customer
 		err := rows.Scan(&c.City, &c.Id, &c.DateOfBirth, &c.Name, &c.Zipcode, &c.Status)
+
 		if err != nil {
-			log.Println("Error while scanning customers " + err.Error())
-			return nil, err
+			if err == sql.ErrNoRows {
+				return nil, errs.NewNotFoundError("Customer not found")
+			} else {
+				log.Println("Error while scanning customers " + err.Error())
+				return nil, errs.NewUnexpectedError("Unexpected database error")
+			}
 		}
+
 		customers = append(customers, c)
 	}
 
