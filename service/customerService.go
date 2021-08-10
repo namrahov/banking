@@ -4,7 +4,6 @@ import (
 	"github.com/namrahov/banking/domain"
 	"github.com/namrahov/banking/dto"
 	"github.com/namrahov/banking/errs"
-	"github.com/namrahov/banking/mapper"
 )
 
 type CustomerService interface {
@@ -39,7 +38,7 @@ func (s DefaultCustomerService) FindById(id string) (*dto.CustomerResponse, *err
 		return nil, err
 	}
 
-	return mapper.MapCustomerToDto(customer), nil
+	return customer.ToDto(), nil
 }
 
 func NewCustomerService(repository domain.CustomerRepository) DefaultCustomerService {
