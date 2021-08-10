@@ -3,12 +3,12 @@ package domain
 import "github.com/namrahov/banking/errs"
 
 type Customer struct {
-	Id          int    `json:"customer_id"`
-	Name        string `json:"full_name"`
-	City        string `json:"city"`
-	Zipcode     string `json:"zipcode"`
-	DateOfBirth string `json:"date_of_birth"`
-	Status      string `json:"status"`
+	Id          int    `db:"customer_id"`
+	Name        string `db:"name"`
+	City        string `db:"city"`
+	Zipcode     string `db:"zipcode"`
+	DateOfBirth string `db:"date_of_birth"`
+	Status      string `db:"status"`
 }
 
 type CustomerRepository interface {
