@@ -10,6 +10,7 @@ type CustomerService interface {
 	GetAllCustomer() ([]domain.Customer, *errs.AppError)
 	FindAllByStatus(status string) ([]domain.Customer, *errs.AppError)
 	FindById(id string) (*dto.CustomerResponse, *errs.AppError)
+	Save(customer domain.Customer) (*domain.Customer, *errs.AppError)
 }
 
 type DefaultCustomerService struct {
@@ -39,6 +40,16 @@ func (s DefaultCustomerService) FindById(id string) (*dto.CustomerResponse, *err
 	}
 
 	return customer.ToDto(), nil
+}
+
+func (s DefaultCustomerService) Save(customer domain.Customer) (*domain.Customer, *errs.AppError) {
+	customerDb, err := s.repo.Save(customer)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return customerDb, nil
 }
 
 func NewCustomerService(repository domain.CustomerRepository) DefaultCustomerService {

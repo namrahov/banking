@@ -92,6 +92,26 @@ func (d CustomerRepositoryDb) FindById(id string) (*Customer, *errs.AppError) {
 	return &c, nil
 }
 
+func (d CustomerRepositoryDb) Save(c Customer) (*Customer, *errs.AppError) {
+	sqlInsert := "INSERT INTO CUSTOMERS (city, date_of_birth, name, zipcode, status) values ($1, $2 , $3, $4, $5) RETURNING customer_id"
+
+	result, err := d.conn.Exec(sqlInsert, c.City, c.DateOfBirth, c.Name, c.Zipcode, c.Status)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errs.NewNotFoundError("Customer not found")
+		} else {
+			log.Println("Error while save customer " + err.Error())
+			return nil, errs.NewUnexpectedError("Unexpected database error")
+		}
+	}
+
+	id, err := result.LastInsertId()
+	c.Id = int(id)
+
+	return &c, nil
+}
+
 func NewCustomerRepositoryDb() CustomerRepositoryDb {
 	conn, err := sql.Open("pgx", "host=localhost port=5432 dbname=postgres user=postgres password=boot")
 

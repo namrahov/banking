@@ -6,3 +6,12 @@ type CustomerResponse struct {
 	City   string `json:"city"`
 	Status string `json:"status"`
 }
+
+type CustomerDto struct {
+	Id          int    `json:"Id"`
+	Name        string `json:"fullName"`
+	City        string `json:"city"`
+	Zipcode     string `json:"zipcode"`
+	DateOfBirth string `json:"dateOfBirth"`
+	Status      string `json:"status"`
+}
