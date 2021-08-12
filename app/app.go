@@ -17,6 +17,7 @@ func Start() {
 	router.HandleFunc("/customer/{customer_id}", ch.FindById).Methods(http.MethodGet)
 	router.HandleFunc("/customers/type", ch.FindAllByStatus).Methods(http.MethodGet)
 	router.HandleFunc("/customer/save", ch.Save).Methods(http.MethodPost)
+	router.HandleFunc("/customer/update", ch.Update).Methods(http.MethodPut)
 
 	log.Fatal(http.ListenAndServe("localhost:8000", router))
 }

@@ -79,6 +79,12 @@ func (ch *CustomerHandlers) Save(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(customerDb)
 }
 
+func (ch *CustomerHandlers) Update(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
+
+	ch.service.Update(name)
+}
+
 func getDtoFromRequest(r *http.Request) (*domain.Customer, error) {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {

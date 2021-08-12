@@ -112,6 +112,15 @@ func (d CustomerRepositoryDb) Save(c Customer) (*Customer, *errs.AppError) {
 	return &c, nil
 }
 
+func (d CustomerRepositoryDb) Update(name string) {
+	stmp := `update customers set name = $1 where name = $2`
+	_, err := d.conn.Exec(stmp, name, "Nurlan")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func NewCustomerRepositoryDb() CustomerRepositoryDb {
 	conn, err := sql.Open("pgx", "host=localhost port=5432 dbname=postgres user=postgres password=boot")
 

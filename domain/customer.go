@@ -19,6 +19,7 @@ type CustomerRepository interface {
 	FindById(string) (*Customer, *errs.AppError)
 	FindAllByStatus(status string) ([]Customer, *errs.AppError)
 	Save(customer Customer) (*Customer, *errs.AppError)
+	Update(name string)
 }
 
 func (c Customer) ToDto() *dto.CustomerResponse {
